@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe OmniAuth::Strategies::Dribbble do
   let(:access_token) { double('AccessToken', :options => {}) }
+  let(:parsed_response) { double('ParsedResponse') }
+  let(:response) { double('Response', :parsed => parsed_response) }
 
   subject { OmniAuth::Strategies::Dribbble.new({}) }
 
@@ -20,6 +22,13 @@ describe OmniAuth::Strategies::Dribbble do
 
     it 'has the correct token URL' do
       expect(subject.options.client_options.token_url).to eq('https://dribbble.com/oauth/token')
+    end
+  end
+
+  context '#raw_info' do
+    it 'uses absolute paths' do
+      access_token.should_receive(:get).with('/v1/user').and_return(response)
+      expect(subject.raw_info).to eq(parsed_response)
     end
   end
 end
