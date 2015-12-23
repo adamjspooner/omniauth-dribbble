@@ -31,4 +31,13 @@ describe OmniAuth::Strategies::Dribbble do
       expect(subject.raw_info).to eq(parsed_response)
     end
   end
+
+  context '#callback_phase' do
+    it 'does not contains query_string in callback_url' do
+      allow(subject).to receive(:full_host).and_return('full_host')
+      allow(subject).to receive(:script_name).and_return('dribbble')
+      allow(subject).to receive(:query_string).and_return('query_string')
+      expect(subject.callback_url).to_not include('query_string')
+    end
+  end
 end
