@@ -8,7 +8,7 @@ describe OmniAuth::Strategies::Dribbble do
   subject { OmniAuth::Strategies::Dribbble.new({}) }
 
   before do
-    subject.stub(:access_token).and_return(access_token)
+    allow(subject).to receive(:access_token).and_return(access_token)
   end
 
   context 'client options' do
@@ -27,7 +27,7 @@ describe OmniAuth::Strategies::Dribbble do
 
   context '#raw_info' do
     it 'uses absolute paths' do
-      access_token.should_receive(:get).with('/v1/user').and_return(response)
+      expect(access_token).to receive(:get).with('/v1/user').and_return(response)
       expect(subject.raw_info).to eq(parsed_response)
     end
   end
